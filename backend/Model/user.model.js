@@ -1,6 +1,5 @@
 const mongoose=require('mongoose');
-const bcrypt=require('bcrypt');
-const jsonwebtoken=require('jsonwebtoken');
+
 
 
 const userschema=new mongoose.Schema({
