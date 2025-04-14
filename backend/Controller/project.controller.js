@@ -7,7 +7,7 @@ const createProject = async (req, res) => {
     const {
       area,
       bricks,
-      cement,
+      cement,f
       flooring,
       roofing,
       paint,
