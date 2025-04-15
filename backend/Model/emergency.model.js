@@ -1,10 +1,11 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
+const { v4: uuidv4 } = require("uuid");
 
-
-
-const emrgencyInfoSchema = new mongoose.Schema({
+const emrgencyInfoSchema = new mongoose.Schema(
+  {
     name: { type: String, required: true },
     bloodGroup: { type: String, required: true },
+    secretKey: { type: String, required: true },
     allergies: [String],
     medications: [String],
     emergencyContact: {
@@ -22,7 +23,9 @@ const emrgencyInfoSchema = new mongoose.Schema({
       default: uuidv4,
       unique: true,
     },
-  }, { _id: false });
+  },
+  { timestamps: true }
+);
 
-const emergency=mongoose.model('Emergency',emrgencyInfoSchema);
-module.exports= emergency;
+const Emergency = mongoose.model("Emergency", emrgencyInfoSchema);
+module.exports = Emergency;

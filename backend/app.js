@@ -4,7 +4,9 @@ const cors=require('cors');
 const cookie_parser=require('cookie-parser');
 const connect_database=require('./config/db');
 const userroutes=require('./Routes/user.route')
-const projectRoutes=require('./Routes/project.route')
+const medicalroutes= require('./Routes/medical.route')
+const emergencyroutes= require('./Routes/emergency.route')
+
 const dotenv=require('dotenv');
 dotenv.config();
 
@@ -18,5 +20,7 @@ app.use(express.urlencoded({extended:true}));
 app.use(cookie_parser());
 
 app.use('/users',userroutes);
-app.use('/project',projectRoutes);
+app.use('/medical',medicalroutes);
+app.use('/emergency',emergencyroutes)
+
 module.exports=app;
