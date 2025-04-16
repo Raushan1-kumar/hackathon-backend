@@ -6,6 +6,8 @@ const connect_database=require('./config/db');
 const userroutes=require('./Routes/user.route')
 const medicalroutes= require('./Routes/medical.route')
 const emergencyroutes= require('./Routes/emergency.route')
+const bloodroutes = require('./Routes/blood.route')
+const aiRoute= require('./Routes/ai.route')
 
 const dotenv=require('dotenv');
 dotenv.config();
@@ -21,6 +23,8 @@ app.use(cookie_parser());
 
 app.use('/user',userroutes);
 app.use('/medical',medicalroutes);
-app.use('/emergency',emergencyroutes)
+app.use('/emergency',emergencyroutes);
+app.use('/blood',bloodroutes);
+app.use('/ai',aiRoute);
 
 module.exports=app;
