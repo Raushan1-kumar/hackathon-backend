@@ -20,6 +20,8 @@ const userschema=new mongoose.Schema({
         required:true,
         minLength:[8,"Minimum eight letter is required"]
     },
+    resetPasswordToken: String,
+    resetPasswordExpires: Date
   
 });
 

@@ -56,9 +56,10 @@ const add_emergency_info = async (req, res) => {
 const access_emergency_detail = async (req, res) => {
     try {
         const { uuid } = req.params;
-
+        console.log(req.params);
+        console.log(uuid);
         const emergencyInfo = await Emergency.findOne({ emergencyUUID: uuid });
-
+          console.log(emergencyInfo);
         if (!emergencyInfo) {
             return res.status(404).json({
                 success: false,

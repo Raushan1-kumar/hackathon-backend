@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookie_parser());
 
-app.use('/users',userroutes);
+app.use('/user',userroutes);
 app.use('/medical',medicalroutes);
 app.use('/emergency',emergencyroutes)
 
