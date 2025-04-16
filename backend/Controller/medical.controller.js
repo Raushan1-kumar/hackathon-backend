@@ -1,5 +1,6 @@
 const MedicalInfo = require('../Model/medical.model');
 const cloudinary = require('../config/cloudinary')
+const MedicalHistory = require('../Model/medicalHistory.model')
 
 const uploadToCloudinary = async (file) => {
     return new Promise((resolve, reject) => {
@@ -16,14 +17,18 @@ const uploadToCloudinary = async (file) => {
 
 const add_medical_info = async (req, res) => {
   try {
+    console.log(req.body);
     const {
+      userId,
       dob,
       gender,
+      age,
       height,
       weight,
-      chronicConditions,
-      pastSurgeries,
-      medicalHistoryNotes,
+      bloodPressure,
+      heartRate,
+      chronicDiseases,
+      surgeries,
       documents
     } = req.body;
 
@@ -33,7 +38,7 @@ const add_medical_info = async (req, res) => {
         message: "Please provide all required fields"
       });
     }
-
+     console.log(documents);
     let uploadedDocs = [];
     if (documents && documents.length > 0) {
       for (const doc of documents) {
@@ -47,13 +52,16 @@ const add_medical_info = async (req, res) => {
     }
 
     const medicalInfo = new MedicalInfo({
+      userId,
       dob: new Date(dob),
+      age,
       gender,
       height: Number(height),
       weight: Number(weight),
-      chronicConditions: chronicConditions || [],
-      pastSurgeries: pastSurgeries || [],
-      medicalHistoryNotes,
+      chronicDiseases,
+      bloodPressure,
+      heartRate,
+      surgeries,
       documents: uploadedDocs,
     });
 
@@ -77,15 +85,16 @@ const add_medical_info = async (req, res) => {
 
 const access_medical_info = async (req, res) => {
     try {
-        const medicalInfo = await MedicalInfo.findOne({ _id: req.params.id });
-
+        const {userId}=req.body
+        const medicalInfo = await MedicalInfo.findOne({userId:userId});
+        console.log(userId);
+        console.log(medicalInfo);
         if (!medicalInfo) {
             return res.status(404).json({
                 success: false,
                 message: "Medical information not found"
             });
         }
-
         res.status(200).json({
             success: true,
             data: medicalInfo
@@ -155,8 +164,47 @@ const update_medical_info = async (req, res) => {
     }
 };
 
+
+const addMedicalHistory = async (req, res) => {
+  try {
+    const { allergies, medications, chronicConditions, surgeries, vaccinations } = req.body;
+    console.log(req.body);
+
+    // Check if medical history already exists for this user
+  
+      // Create new record
+      const newHistory = new MedicalHistory({
+        allergies,
+        medications,
+        chronicConditions,
+        surgeries,
+        vaccinations
+      });
+
+      await newHistory.save();
+      return res.status(201).json({ message: 'Medical history added successfully.', data: newHistory });
+    
+}catch{
+  res.status(404).json({
+    msg:"something went wrong"
+  })
+}}
+
+const getMedicalHistory = async (req, res) => {
+    const response= await MedicalHistory.find();
+    res.status(200).json({
+      success: true,
+      message: "Medical history retrieved successfully",
+      data: response
+    })
+}
+
+
+
 module.exports = {
     add_medical_info,
     access_medical_info,
-    update_medical_info
+    update_medical_info,
+    addMedicalHistory,
+    getMedicalHistory
 };

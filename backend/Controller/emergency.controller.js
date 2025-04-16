@@ -2,6 +2,7 @@ const Emergency = require('../Model/emergency.model');
 
 const add_emergency_info = async (req, res) => {
     try {
+        console.log(req.body);
       const {
         name,
         bloodGroup,
@@ -144,9 +145,35 @@ const delete_emergency_info = async (req, res) => {
     }
 };
 
+
+const verify_secret= async (req, res) => {
+    try {
+        const { secretKey } = req.body;
+        console.log(req.body);
+        console.log(secretKey);
+        const detail = await Emergency.findOne({secretKey:secretKey})
+        if (!detail) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid secret"
+                });
+                }
+        else{
+            res.status(200).json({
+                success:true
+            })
+        }
+    }catch{
+        res.status(404).json({
+            msg:"something went wrong"
+        })
+    }
+
+}
 module.exports = {
     add_emergency_info,
     access_emergency_detail,
     update_emergency_info,
-    delete_emergency_info
+    delete_emergency_info,
+    verify_secret
 };
